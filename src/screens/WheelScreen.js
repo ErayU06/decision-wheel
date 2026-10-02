@@ -10,6 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import CustomWheel from '../components/CustomWheel';
 import { useTheme } from '../theme/ThemeContext';
+import { usePro } from '../premium/ProContext';
 
 const CONFETTI = ['🎉', '🎊', '✨', '🥳', '🎈', '⭐'];
 
@@ -67,6 +68,7 @@ function ResultModal({ result, onClose, onAgain }) {
 }
 
 export default function WheelScreen({ title, items, color = '#6C5CE7', onResult, onBack }) {
+  const { palette } = usePro();
   const wheelRef = useRef(null);
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -86,6 +88,7 @@ export default function WheelScreen({ title, items, color = '#6C5CE7', onResult,
         <CustomWheel
           ref={wheelRef}
           items={items}
+          colors={palette.colors}
           onSpinStart={() => setBusy(true)}
           onResult={(item) => {
             setBusy(false);

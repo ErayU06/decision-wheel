@@ -29,7 +29,7 @@ const slicePath = (cx, cy, r, start, end) => {
 };
 
 const CustomWheel = forwardRef(function CustomWheel(
-  { items, size = 320, onResult, onSpinStart },
+  { items, colors = SLICE_COLORS, size = 320, onResult, onSpinStart },
   ref
 ) {
   const n = items.length;
@@ -50,9 +50,9 @@ const CustomWheel = forwardRef(function CustomWheel(
         const mid = start + sliceAngle / 2;
         const textPos = polar(c, c, r * 0.62, mid);
         const text = label.length > 13 ? `${label.slice(0, 12)}…` : label;
-        return { label: text, path: slicePath(c, c, r, start, end), mid, textPos, color: SLICE_COLORS[i % SLICE_COLORS.length] };
+        return { label: text, path: slicePath(c, c, r, start, end), mid, textPos, color: colors[i % colors.length] };
       }),
-    [items, sliceAngle, c, r]
+    [items, colors, sliceAngle, c, r]
   );
 
   const onTick = useCallback(() => {

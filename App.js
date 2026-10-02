@@ -4,6 +4,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import WheelScreen from './src/screens/WheelScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
+import { ProProvider } from './src/premium/ProContext';
+import UpgradeModal from './src/components/UpgradeModal';
 import {
   loadHistory,
   loadSavedWheels,
@@ -92,6 +94,7 @@ function Root() {
           onDeleteWheel={deleteWheel}
         />
       )}
+      <UpgradeModal />
     </>
   );
 }
@@ -99,7 +102,9 @@ function Root() {
 export default function App() {
   return (
     <ThemeProvider>
-      <Root />
+      <ProProvider>
+        <Root />
+      </ProProvider>
     </ThemeProvider>
   );
 }

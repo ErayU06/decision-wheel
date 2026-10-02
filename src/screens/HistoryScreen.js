@@ -1,5 +1,8 @@
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
+import ProBadge from '../components/ProBadge';
+import { limitReasons } from '../components/UpgradeModal';
+import { FREE_HISTORY_LIMIT, usePro } from '../premium/ProContext';
 
 const formatDate = (iso) =>
   new Date(iso).toLocaleString('tr-TR', {
@@ -12,6 +15,9 @@ const formatDate = (iso) =>
 
 export default function HistoryScreen({ history, onClear, onBack }) {
   const { theme } = useTheme();
+  const { isPro, showUpgrade } = usePro();
+  const visible = isPro ? history : history.slice(0, FREE_HISTORY_LIMIT);
+  const hidden = history.length - visible.length;
 
   const confirmClear = () =>
     Alert.alert('Geçmişi temizle', 'Tüm geçmiş kayıtları silinecek.', [
@@ -32,9 +38,22 @@ export default function HistoryScreen({ history, onClear, onBack }) {
       </View>
 
       <FlatList
-        data={history}
+        data={visible}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
+        ListFooterComponent={
+          hidden > 0 ? (
+            <Pressable
+              style={[styles.lock, { borderColor: '#F5A623' }]}
+              onPress={() => showUpgrade(limitReasons.history)}
+            >
+              <ProBadge />
+              <Text style={[styles.lockText, { color: theme.text }]}>
+                {hidden} eski kayıt daha var. Tümünü görmek için Pro'ya yükselt.
+              </Text>
+            </Pressable>
+          ) : null
+        }
         ListEmptyComponent={
           <View style={styles.empty}>
             <Text style={styles.emptyEmoji}>🎡</Text>
@@ -73,6 +92,17 @@ const styles = StyleSheet.create({
   item: { padding: 16, borderRadius: 16, marginBottom: 10 },
   result: { fontSize: 20, fontWeight: '800' },
   meta: { marginTop: 4, fontSize: 13 },
+  lock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 4,
+  },
+  lockText: { flex: 1, fontSize: 14, fontWeight: '600' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 30 },
   emptyEmoji: { fontSize: 56 },
   emptyText: { marginTop: 12, textAlign: 'center', fontSize: 16 },
