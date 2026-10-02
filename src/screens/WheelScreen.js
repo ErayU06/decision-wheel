@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import CustomWheel from '../components/CustomWheel';
+import { useTheme } from '../theme/ThemeContext';
 
 const CONFETTI = ['🎉', '🎊', '✨', '🥳', '🎈', '⭐'];
 
@@ -28,6 +29,7 @@ function Confetti({ index }) {
 }
 
 function ResultModal({ result, onClose, onAgain }) {
+  const { theme } = useTheme();
   const scale = useSharedValue(0);
   const wobble = useSharedValue(0);
   useEffect(() => {
@@ -48,15 +50,15 @@ function ResultModal({ result, onClose, onAgain }) {
         {Array.from({ length: 24 }, (_, i) => (
           <Confetti key={i} index={i} />
         ))}
-        <Animated.View style={[styles.card, cardStyle]}>
+        <Animated.View style={[styles.card, { backgroundColor: theme.surface }, cardStyle]}>
           <Text style={styles.cardEmoji}>🎉</Text>
-          <Text style={styles.cardLabel}>Karar verildi!</Text>
-          <Text style={styles.cardResult}>{result}</Text>
+          <Text style={[styles.cardLabel, { color: theme.muted }]}>Karar verildi!</Text>
+          <Text style={[styles.cardResult, { color: theme.text }]}>{result}</Text>
           <Pressable style={styles.primaryBtn} onPress={onAgain}>
             <Text style={styles.primaryText}>Tekrar Çevir</Text>
           </Pressable>
           <Pressable onPress={onClose}>
-            <Text style={styles.link}>Kapat</Text>
+            <Text style={[styles.link, { color: theme.muted }]}>Kapat</Text>
           </Pressable>
         </Animated.View>
       </View>
@@ -64,7 +66,7 @@ function ResultModal({ result, onClose, onAgain }) {
   );
 }
 
-export default function WheelScreen({ title, items, color = '#6C5CE7', onBack }) {
+export default function WheelScreen({ title, items, color = '#6C5CE7', onResult, onBack }) {
   const wheelRef = useRef(null);
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -88,6 +90,7 @@ export default function WheelScreen({ title, items, color = '#6C5CE7', onBack })
           onResult={(item) => {
             setBusy(false);
             setResult(item);
+            onResult?.(item);
           }}
         />
       </View>
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', paddingTop: 60 },
   back: { position: 'absolute', top: 56, left: 20 },
   backText: { color: '#fff', fontSize: 18, fontWeight: '600' },
-  title: { color: '#fff', fontSize: 28, fontWeight: '800', marginBottom: 24 },
+  title: { color: '#fff', fontSize: 28, fontWeight: '800', marginTop: 36, marginBottom: 24, paddingHorizontal: 20, textAlign: 'center' },
   wheelWrap: { flex: 1, justifyContent: 'center' },
   spinBtn: {
     backgroundColor: '#fff',
