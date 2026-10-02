@@ -11,6 +11,7 @@ import Animated, {
 import CustomWheel from '../components/CustomWheel';
 import { useTheme } from '../theme/ThemeContext';
 import { usePro } from '../premium/ProContext';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const CONFETTI = ['🎉', '🎊', '✨', '🥳', '🎈', '⭐'];
 
@@ -31,6 +32,7 @@ function Confetti({ index }) {
 
 function ResultModal({ result, onClose, onAgain }) {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const scale = useSharedValue(0);
   const wobble = useSharedValue(0);
   useEffect(() => {
@@ -53,13 +55,13 @@ function ResultModal({ result, onClose, onAgain }) {
         ))}
         <Animated.View style={[styles.card, { backgroundColor: theme.surface }, cardStyle]}>
           <Text style={styles.cardEmoji}>🎉</Text>
-          <Text style={[styles.cardLabel, { color: theme.muted }]}>Karar verildi!</Text>
+          <Text style={[styles.cardLabel, { color: theme.muted }]}>{t('decisionMade')}</Text>
           <Text style={[styles.cardResult, { color: theme.text }]}>{result}</Text>
           <Pressable style={styles.primaryBtn} onPress={onAgain}>
-            <Text style={styles.primaryText}>Tekrar Çevir</Text>
+            <Text style={styles.primaryText}>{t('spinAgain')}</Text>
           </Pressable>
           <Pressable onPress={onClose}>
-            <Text style={[styles.link, { color: theme.muted }]}>Kapat</Text>
+            <Text style={[styles.link, { color: theme.muted }]}>{t('close')}</Text>
           </Pressable>
         </Animated.View>
       </View>
@@ -69,6 +71,7 @@ function ResultModal({ result, onClose, onAgain }) {
 
 export default function WheelScreen({ title, items, color = '#6C5CE7', onResult, onBack }) {
   const { palette } = usePro();
+  const { t } = useLanguage();
   const wheelRef = useRef(null);
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -81,7 +84,7 @@ export default function WheelScreen({ title, items, color = '#6C5CE7', onResult,
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <Pressable onPress={onBack} style={styles.back}>
-        <Text style={styles.backText}>‹ Geri</Text>
+        <Text style={styles.backText}>{t('back')}</Text>
       </Pressable>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.wheelWrap}>
@@ -102,7 +105,7 @@ export default function WheelScreen({ title, items, color = '#6C5CE7', onResult,
         disabled={busy}
         onPress={spin}
       >
-        <Text style={[styles.spinText, { color }]}>{busy ? 'Dönüyor…' : 'ÇEVİR!'}</Text>
+        <Text style={[styles.spinText, { color }]}>{busy ? t('spinning') : t('spin')}</Text>
       </Pressable>
       {result && (
         <ResultModal result={result} onClose={() => setResult(null)} onAgain={spin} />

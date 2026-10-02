@@ -1,54 +1,86 @@
+// Localized preset packs: `title` and `items` are keyed by language code.
 export const CATEGORIES = [
   {
     id: 'yemek',
-    title: 'Ne Yesem?',
     emoji: '🍕',
     color: '#FF6B6B',
-    items: [
-      'Pizza', 'Hamburger', 'Kebap', 'Lahmacun', 'Sushi', 'Makarna',
-      'Döner', 'Tavuk Wrap', 'Mantı', 'Köfte', 'Pide', 'Çorba',
-    ],
+    title: { tr: 'Ne Yesem?', en: 'What Should I Eat?' },
+    items: {
+      tr: [
+        'Pizza', 'Hamburger', 'Kebap', 'Lahmacun', 'Sushi', 'Makarna',
+        'Döner', 'Tavuk Wrap', 'Mantı', 'Köfte', 'Pide', 'Çorba',
+      ],
+      en: [
+        'Pizza', 'Hamburger', 'Kebab', 'Tacos', 'Sushi', 'Pasta',
+        'Burrito', 'Chicken Wrap', 'Ramen', 'Meatballs', 'Curry', 'Soup',
+      ],
+    },
   },
   {
     id: 'film',
-    title: 'Ne İzlesem?',
     emoji: '🎬',
     color: '#6C5CE7',
-    items: [
-      'Inception', 'Interstellar', 'Parasite', 'The Godfather', 'Forrest Gump',
-      'Fight Club', 'Gladyatör', 'Truman Show', 'Esaretin Bedeli', 'Hababam Sınıfı',
-    ],
+    title: { tr: 'Ne İzlesem?', en: 'What Should I Watch?' },
+    items: {
+      tr: [
+        'Inception', 'Interstellar', 'Parasite', 'The Godfather', 'Forrest Gump',
+        'Fight Club', 'Gladyatör', 'Truman Show', 'Esaretin Bedeli', 'Hababam Sınıfı',
+      ],
+      en: [
+        'Inception', 'Interstellar', 'Parasite', 'The Godfather', 'Forrest Gump',
+        'Fight Club', 'Gladiator', 'The Truman Show', 'The Shawshank Redemption', 'The Matrix',
+      ],
+    },
   },
   {
     id: 'aktivite',
-    title: 'Ne Yapsam?',
     emoji: '🎯',
     color: '#00B894',
-    items: [
-      'Yürüyüşe çık', 'Kitap oku', 'Oyun oyna', 'Arkadaşını ara', 'Evi toparla',
-      'Yeni tarif dene', 'Spor yap', 'Müzik dinle', 'Resim çiz', 'Kahve içmeye çık',
-    ],
+    title: { tr: 'Ne Yapsam?', en: 'What Should I Do?' },
+    items: {
+      tr: [
+        'Yürüyüşe çık', 'Kitap oku', 'Oyun oyna', 'Arkadaşını ara', 'Evi toparla',
+        'Yeni tarif dene', 'Spor yap', 'Müzik dinle', 'Resim çiz', 'Kahve içmeye çık',
+      ],
+      en: [
+        'Go for a walk', 'Read a book', 'Play a game', 'Call a friend', 'Tidy up',
+        'Try a new recipe', 'Work out', 'Listen to music', 'Draw something', 'Grab a coffee',
+      ],
+    },
   },
   {
     id: 'oyun',
-    title: 'Hangi Oyunu Oynasam?',
     emoji: '🎮',
     color: '#0984E3',
-    items: [
-      'FIFA / FC', 'Minecraft', 'Valorant', 'League of Legends', 'GTA V',
-      'Elden Ring', 'Zelda', 'Among Us', 'Fortnite', 'Stardew Valley',
-      'Mario Kart', 'Counter-Strike 2',
-    ],
+    title: { tr: 'Hangi Oyunu Oynasam?', en: 'Which Game Should I Play?' },
+    items: {
+      tr: [
+        'FIFA / FC', 'Minecraft', 'Valorant', 'League of Legends', 'GTA V',
+        'Elden Ring', 'Zelda', 'Among Us', 'Fortnite', 'Stardew Valley',
+        'Mario Kart', 'Counter-Strike 2',
+      ],
+      en: [
+        'FIFA / FC', 'Minecraft', 'Valorant', 'League of Legends', 'GTA V',
+        'Elden Ring', 'Zelda', 'Among Us', 'Fortnite', 'Stardew Valley',
+        'Mario Kart', 'Counter-Strike 2',
+      ],
+    },
   },
   {
     id: 'icecek',
-    title: 'Hangi İçeceği İçsem?',
     emoji: '☕',
     color: '#B8860B',
-    items: [
-      'Türk Kahvesi', 'Latte', 'Espresso', 'Filtre Kahve', 'Çay',
-      'Soğuk Kahve', 'Mocha', 'Limonata', 'Sıcak Çikolata', 'Ayran',
-    ],
+    title: { tr: 'Hangi İçeceği İçsem?', en: 'What Should I Drink?' },
+    items: {
+      tr: [
+        'Türk Kahvesi', 'Latte', 'Espresso', 'Filtre Kahve', 'Çay',
+        'Soğuk Kahve', 'Mocha', 'Limonata', 'Sıcak Çikolata', 'Ayran',
+      ],
+      en: [
+        'Turkish Coffee', 'Latte', 'Espresso', 'Filter Coffee', 'Tea',
+        'Iced Coffee', 'Mocha', 'Lemonade', 'Hot Chocolate', 'Ayran',
+      ],
+    },
   },
 ];
 

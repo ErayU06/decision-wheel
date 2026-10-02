@@ -1,29 +1,26 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import ProBadge from './ProBadge';
 import { useTheme } from '../theme/ThemeContext';
-import { usePro, FREE_HISTORY_LIMIT, FREE_WHEEL_LIMIT, PRO_HISTORY_LIMIT } from '../premium/ProContext';
-
-const PERKS = [
-  'Sınırsız özel çark kaydet',
-  `Tüm geçmişe eriş (son ${PRO_HISTORY_LIMIT})`,
-  'Özel çark renk paletleri',
-];
+import { usePro, PRO_HISTORY_LIMIT } from '../premium/ProContext';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function UpgradeModal() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const { upgrade, hideUpgrade, setPro } = usePro();
+  const perks = [t('perkWheels'), t('perkHistory', { n: PRO_HISTORY_LIMIT }), t('perkPalettes')];
 
   return (
     <Modal transparent animationType="fade" visible={!!upgrade} onRequestClose={hideUpgrade}>
       <View style={styles.backdrop}>
         <View style={[styles.card, { backgroundColor: theme.surface }]}>
           <ProBadge style={styles.badge} />
-          <Text style={[styles.title, { color: theme.text }]}>Pro'ya Yükselt</Text>
+          <Text style={[styles.title, { color: theme.text }]}>{t('upgradeTitle')}</Text>
           {upgrade?.reason ? (
             <Text style={[styles.reason, { color: theme.muted }]}>{upgrade.reason}</Text>
           ) : null}
           <View style={styles.perks}>
-            {PERKS.map((p) => (
+            {perks.map((p) => (
               <Text key={p} style={[styles.perk, { color: theme.text }]}>✓  {p}</Text>
             ))}
           </View>
@@ -34,22 +31,16 @@ export default function UpgradeModal() {
               hideUpgrade();
             }}
           >
-            <Text style={styles.primaryText}>Pro'yu Etkinleştir (Test)</Text>
+            <Text style={styles.primaryText}>{t('activatePro')}</Text>
           </Pressable>
           <Pressable onPress={hideUpgrade} hitSlop={10}>
-            <Text style={[styles.later, { color: theme.muted }]}>Şimdi Değil</Text>
+            <Text style={[styles.later, { color: theme.muted }]}>{t('notNow')}</Text>
           </Pressable>
         </View>
       </View>
     </Modal>
   );
 }
-
-export const limitReasons = {
-  wheels: `Ücretsiz hesapta en fazla ${FREE_WHEEL_LIMIT} özel çark kaydedebilirsin.`,
-  history: `Ücretsiz hesapta yalnızca son ${FREE_HISTORY_LIMIT} kayıt görünür.`,
-  palette: 'Özel renk paletleri Pro kullanıcılara özel.',
-};
 
 const styles = StyleSheet.create({
   backdrop: {

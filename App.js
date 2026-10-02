@@ -5,6 +5,7 @@ import WheelScreen from './src/screens/WheelScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { ProProvider } from './src/premium/ProContext';
+import { LanguageProvider } from './src/i18n/LanguageContext';
 import UpgradeModal from './src/components/UpgradeModal';
 import {
   loadHistory,
@@ -101,10 +102,12 @@ function Root() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ProProvider>
-        <Root />
-      </ProProvider>
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <ProProvider>
+          <Root />
+        </ProProvider>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }

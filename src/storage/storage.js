@@ -6,6 +6,7 @@ const KEYS = {
   theme: 'dw:theme',
   pro: 'dw:isPro',
   palette: 'dw:palette',
+  language: 'dw:lang',
 };
 const HISTORY_LIMIT = 200;
 
@@ -40,3 +41,6 @@ export const savePro = (value) => writeJson(KEYS.pro, value);
 
 export const loadPalette = () => readJson(KEYS.palette, null);
 export const savePalette = (id) => writeJson(KEYS.palette, id);
+
+export const loadLanguage = () => readJson(KEYS.language, null);
+export const saveLanguage = (lang) => writeJson(KEYS.language, lang);

@@ -14,8 +14,8 @@ import { CATEGORIES } from '../data/categories';
 import { useTheme } from '../theme/ThemeContext';
 import { PALETTES } from '../data/palettes';
 import ProBadge from '../components/ProBadge';
-import { limitReasons } from '../components/UpgradeModal';
 import { FREE_WHEEL_LIMIT, usePro } from '../premium/ProContext';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function HomeScreen({
   onSelect,
@@ -25,6 +25,7 @@ export default function HomeScreen({
   onDeleteWheel,
 }) {
   const { theme, toggle } = useTheme();
+  const { t, lang, toggleLang, pick } = useLanguage();
   const { isPro, setPro, palette, setPaletteId, showUpgrade } = usePro();
   const [title, setTitle] = useState('');
   const [input, setInput] = useState('');
@@ -38,11 +39,11 @@ export default function HomeScreen({
   };
 
   const ready = custom.length >= 2;
-  const wheelTitle = title.trim() || 'Benim Çarkım';
+  const wheelTitle = title.trim() || t('myWheel');
 
   const save = () => {
     if (!isPro && savedWheels.length >= FREE_WHEEL_LIMIT) {
-      showUpgrade(limitReasons.wheels);
+      showUpgrade(t('limitWheels', { n: FREE_WHEEL_LIMIT }));
       return;
     }
     onSaveWheel({ id: String(Date.now()), title: wheelTitle, items: custom });
@@ -62,57 +63,67 @@ export default function HomeScreen({
       >
         <View style={styles.topBar}>
           <Pressable
+            style={[styles.langBtn, { backgroundColor: theme.surface }]}
+            onPress={toggleLang}
+            accessibilityLabel={t('a11yLanguage')}
+          >
+            <Text style={styles.iconText}>{lang === 'tr' ? '🇹🇷' : '🇬🇧'}</Text>
+            <Text style={[styles.langText, { color: theme.text }]}>{lang.toUpperCase()}</Text>
+          </Pressable>
+          <Pressable
             style={[styles.iconBtn, { backgroundColor: theme.surface }]}
             onPress={onOpenHistory}
-            accessibilityLabel="Geçmiş"
+            accessibilityLabel={t('a11yHistory')}
           >
             <Text style={styles.iconText}>🕘</Text>
           </Pressable>
           <Pressable
             style={[styles.iconBtn, { backgroundColor: theme.surface }]}
             onPress={toggle}
-            accessibilityLabel="Temayı değiştir"
+            accessibilityLabel={t('a11yTheme')}
           >
             <Text style={styles.iconText}>{theme.mode === 'dark' ? '☀️' : '🌙'}</Text>
           </Pressable>
         </View>
 
-        <Text style={[styles.heading, { color: theme.text }]}>🎡 Karar Çarkı</Text>
+        <Text style={[styles.heading, { color: theme.text }]}>{t('appTitle')}</Text>
         <Text style={[styles.sub, { color: theme.muted }]}>
-          Karar veremiyor musun? Çark senin yerine seçsin.
+          {t('appSubtitle')}
         </Text>
 
         <View style={[styles.proCard, { backgroundColor: theme.surface }, isPro && styles.proCardOn]}>
           <View style={styles.flex}>
             <View style={styles.proTitleRow}>
               <Text style={[styles.proTitle, { color: theme.text }]}>
-                {isPro ? 'Pro aktif' : 'Ücretsiz plan'}
+                {isPro ? t('proActive') : t('freePlan')}
               </Text>
               <ProBadge />
             </View>
             <Text style={[styles.proSub, { color: theme.muted }]}>
-              Pro'yu Simüle Et (test anahtarı)
+              {t('simulatePro')}
             </Text>
           </View>
           <Switch
             value={isPro}
             onValueChange={setPro}
             trackColor={{ true: '#F5A623' }}
-            accessibilityLabel="Pro'yu simüle et"
+            accessibilityLabel={t('a11ySimulatePro')}
           />
         </View>
 
-        <Text style={[styles.section, { color: theme.text }]}>Hazır Paketler</Text>
+        <Text style={[styles.section, { color: theme.text }]}>{t('presets')}</Text>
         {CATEGORIES.map((cat) => (
           <Pressable
             key={cat.id}
             style={[styles.card, { backgroundColor: cat.color }]}
-            onPress={() => onSelect({ title: cat.title, items: cat.items, color: cat.color })}
+            onPress={() =>
+              onSelect({ title: pick(cat.title), items: pick(cat.items), color: cat.color })
+            }
           >
             <Text style={styles.cardEmoji}>{cat.emoji}</Text>
             <View style={styles.flex}>
-              <Text style={styles.cardTitle}>{cat.title}</Text>
-              <Text style={styles.cardSub}>{cat.items.length} seçenek</Text>
+              <Text style={styles.cardTitle}>{pick(cat.title)}</Text>
+              <Text style={styles.cardSub}>{t('optionsCount', { n: pick(cat.items).length })}</Text>
             </View>
             <Text style={styles.chev}>›</Text>
           </Pressable>
@@ -120,7 +131,7 @@ export default function HomeScreen({
 
         {savedWheels.length > 0 && (
           <>
-            <Text style={[styles.section, { color: theme.text }]}>Kayıtlı Çarklarım</Text>
+            <Text style={[styles.section, { color: theme.text }]}>{t('savedWheels')}</Text>
             {savedWheels.map((w) => (
               <Pressable
                 key={w.id}
@@ -130,13 +141,13 @@ export default function HomeScreen({
                 <View style={styles.flex}>
                   <Text style={[styles.savedTitle, { color: theme.text }]}>{w.title}</Text>
                   <Text style={[styles.savedSub, { color: theme.muted }]} numberOfLines={1}>
-                    {w.items.length} seçenek · {w.items.join(', ')}
+                    {t('optionsCount', { n: w.items.length })} · {w.items.join(', ')}
                   </Text>
                 </View>
                 <Pressable
                   hitSlop={12}
                   onPress={() => onDeleteWheel(w.id)}
-                  accessibilityLabel="Çarkı sil"
+                  accessibilityLabel={t('a11yDeleteWheel')}
                 >
                   <Text style={[styles.delete, { color: theme.muted }]}>✕</Text>
                 </Pressable>
@@ -145,7 +156,7 @@ export default function HomeScreen({
           </>
         )}
 
-        <Text style={[styles.section, { color: theme.text }]}>Çark Renkleri</Text>
+        <Text style={[styles.section, { color: theme.text }]}>{t('wheelColors')}</Text>
         <View style={styles.palettes}>
           {PALETTES.map((p) => {
             const locked = p.pro && !isPro;
@@ -157,7 +168,7 @@ export default function HomeScreen({
                   styles.paletteCard,
                   { backgroundColor: theme.surface, borderColor: active ? '#F5A623' : 'transparent' },
                 ]}
-                onPress={() => (locked ? showUpgrade(limitReasons.palette) : setPaletteId(p.id))}
+                onPress={() => (locked ? showUpgrade(t('limitPalette')) : setPaletteId(p.id))}
               >
                 <View style={styles.swatches}>
                   {p.colors.slice(0, 5).map((c, i) => (
@@ -165,7 +176,7 @@ export default function HomeScreen({
                   ))}
                 </View>
                 <View style={styles.paletteLabel}>
-                  <Text style={[styles.paletteName, { color: theme.text }]}>{p.name}</Text>
+                  <Text style={[styles.paletteName, { color: theme.text }]}>{pick(p.name)}</Text>
                   {p.pro && <ProBadge />}
                 </View>
                 {locked && <Text style={styles.lockIcon}>🔒</Text>}
@@ -174,13 +185,13 @@ export default function HomeScreen({
           })}
         </View>
 
-        <Text style={[styles.section, { color: theme.text }]}>Kendi Çarkını Oluştur</Text>
+        <Text style={[styles.section, { color: theme.text }]}>{t('createOwn')}</Text>
         <View style={[styles.builder, { backgroundColor: theme.surface }]}>
           <TextInput
             style={[styles.input, styles.titleInput, { backgroundColor: theme.inputBg, color: theme.text }]}
             value={title}
             onChangeText={setTitle}
-            placeholder="Çark başlığı (ör. Hafta sonu planı)"
+            placeholder={t('wheelTitlePlaceholder')}
             placeholderTextColor={theme.placeholder}
           />
           <View style={styles.row}>
@@ -188,13 +199,13 @@ export default function HomeScreen({
               style={[styles.input, styles.flex, { backgroundColor: theme.inputBg, color: theme.text }]}
               value={input}
               onChangeText={setInput}
-              placeholder="Seçenek ekle…"
+              placeholder={t('addOptionPlaceholder')}
               placeholderTextColor={theme.placeholder}
               onSubmitEditing={add}
               returnKeyType="done"
             />
             <Pressable style={[styles.addBtn, { backgroundColor: theme.accent }]} onPress={add}>
-              <Text style={[styles.addText, { color: theme.accentText }]}>Ekle</Text>
+              <Text style={[styles.addText, { color: theme.accentText }]}>{t('add')}</Text>
             </Pressable>
           </View>
           <View style={styles.chips}>
@@ -211,7 +222,7 @@ export default function HomeScreen({
           {!isPro && (
             <View style={styles.quota}>
               <Text style={[styles.quotaText, { color: theme.muted }]}>
-                Kayıtlı çark: {Math.min(savedWheels.length, FREE_WHEEL_LIMIT)}/{FREE_WHEEL_LIMIT}
+                {t('savedQuota', { n: Math.min(savedWheels.length, FREE_WHEEL_LIMIT), max: FREE_WHEEL_LIMIT })}
               </Text>
               {savedWheels.length >= FREE_WHEEL_LIMIT && <ProBadge />}
             </View>
@@ -222,7 +233,7 @@ export default function HomeScreen({
               disabled={!ready}
               onPress={save}
             >
-              <Text style={[styles.saveText, { color: theme.text }]}>Kaydet</Text>
+              <Text style={[styles.saveText, { color: theme.text }]}>{t('save')}</Text>
             </Pressable>
             <Pressable
               style={[styles.createBtn, !ready && styles.disabled]}
@@ -230,7 +241,7 @@ export default function HomeScreen({
               onPress={() => onSelect({ title: wheelTitle, items: custom, color: '#e17055' })}
             >
               <Text style={styles.createText}>
-                {ready ? 'Çarkı Çevir' : 'En az 2 seçenek ekle'}
+                {ready ? t('spinWheel') : t('addAtLeastTwo')}
               </Text>
             </Pressable>
           </View>
@@ -252,6 +263,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconText: { fontSize: 20 },
+  langBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    height: 42,
+    borderRadius: 21,
+    paddingHorizontal: 12,
+  },
+  langText: { fontSize: 14, fontWeight: '800' },
   heading: { fontSize: 34, fontWeight: '900' },
   sub: { fontSize: 15, marginTop: 4 },
   section: { fontSize: 18, fontWeight: '800', marginTop: 28, marginBottom: 12 },

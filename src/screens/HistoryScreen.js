@@ -1,11 +1,11 @@
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
 import ProBadge from '../components/ProBadge';
-import { limitReasons } from '../components/UpgradeModal';
 import { FREE_HISTORY_LIMIT, usePro } from '../premium/ProContext';
+import { useLanguage } from '../i18n/LanguageContext';
 
-const formatDate = (iso) =>
-  new Date(iso).toLocaleString('tr-TR', {
+const formatDate = (iso, locale) =>
+  new Date(iso).toLocaleString(locale, {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
@@ -15,25 +15,26 @@ const formatDate = (iso) =>
 
 export default function HistoryScreen({ history, onClear, onBack }) {
   const { theme } = useTheme();
+  const { t, locale } = useLanguage();
   const { isPro, showUpgrade } = usePro();
   const visible = isPro ? history : history.slice(0, FREE_HISTORY_LIMIT);
   const hidden = history.length - visible.length;
 
   const confirmClear = () =>
-    Alert.alert('Geçmişi temizle', 'Tüm geçmiş kayıtları silinecek.', [
-      { text: 'Vazgeç', style: 'cancel' },
-      { text: 'Temizle', style: 'destructive', onPress: onClear },
+    Alert.alert(t('clearHistoryTitle'), t('clearHistoryMessage'), [
+      { text: t('cancel'), style: 'cancel' },
+      { text: t('clear'), style: 'destructive', onPress: onClear },
     ]);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.bg }]}>
       <View style={styles.header}>
         <Pressable onPress={onBack} hitSlop={12}>
-          <Text style={[styles.back, { color: theme.text }]}>‹ Geri</Text>
+          <Text style={[styles.back, { color: theme.text }]}>{t('back')}</Text>
         </Pressable>
-        <Text style={[styles.title, { color: theme.text }]}>Geçmiş</Text>
+        <Text style={[styles.title, { color: theme.text }]}>{t('history')}</Text>
         <Pressable onPress={confirmClear} disabled={history.length === 0} hitSlop={12}>
-          <Text style={[styles.clear, history.length === 0 && styles.disabled]}>Temizle</Text>
+          <Text style={[styles.clear, history.length === 0 && styles.disabled]}>{t('clear')}</Text>
         </Pressable>
       </View>
 
@@ -45,11 +46,11 @@ export default function HistoryScreen({ history, onClear, onBack }) {
           hidden > 0 ? (
             <Pressable
               style={[styles.lock, { borderColor: '#F5A623' }]}
-              onPress={() => showUpgrade(limitReasons.history)}
+              onPress={() => showUpgrade(t('limitHistory', { n: FREE_HISTORY_LIMIT }))}
             >
               <ProBadge />
               <Text style={[styles.lockText, { color: theme.text }]}>
-                {hidden} eski kayıt daha var. Tümünü görmek için Pro'ya yükselt.
+                {t('historyLocked', { n: hidden })}
               </Text>
             </Pressable>
           ) : null
@@ -58,7 +59,7 @@ export default function HistoryScreen({ history, onClear, onBack }) {
           <View style={styles.empty}>
             <Text style={styles.emptyEmoji}>🎡</Text>
             <Text style={[styles.emptyText, { color: theme.muted }]}>
-              Henüz bir sonuç yok. Çarkı çevir, kararlar burada birikir!
+              {t('historyEmpty')}
             </Text>
           </View>
         }
@@ -66,7 +67,7 @@ export default function HistoryScreen({ history, onClear, onBack }) {
           <View style={[styles.item, { backgroundColor: theme.surface }]}>
             <Text style={[styles.result, { color: theme.text }]}>{item.result}</Text>
             <Text style={[styles.meta, { color: theme.muted }]}>
-              {item.wheelTitle} · {formatDate(item.date)}
+              {item.wheelTitle} · {formatDate(item.date, locale)}
             </Text>
           </View>
         )}
