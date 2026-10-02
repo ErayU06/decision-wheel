@@ -3,8 +3,7 @@ import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withRepeat,
-  withSequence,
+  withDelay,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
@@ -15,12 +14,19 @@ import { useLanguage } from '../i18n/LanguageContext';
 
 const CONFETTI = ['🎉', '🎊', '✨', '🥳', '🎈', '⭐'];
 
+// One-shot confetti: falls once and fades out, so nothing keeps moving behind the result.
 function Confetti({ index }) {
   const y = useSharedValue(-40);
-  const style = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));
+  const opacity = useSharedValue(1);
+  const style = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: y.value }],
+  }));
   useEffect(() => {
-    y.value = withTiming(700, { duration: 2500 + (index % 5) * 400 });
-  }, [index, y]);
+    const duration = 2200 + (index % 5) * 300;
+    y.value = withTiming(700, { duration });
+    opacity.value = withDelay(duration * 0.6, withTiming(0, { duration: duration * 0.4 }));
+  }, [index, y, opacity]);
   return (
     <Animated.Text
       style={[styles.confetti, { left: `${(index * 53) % 95}%` }, style]}
@@ -33,19 +39,12 @@ function Confetti({ index }) {
 function ResultModal({ result, onClose, onAgain }) {
   const { theme } = useTheme();
   const { t } = useLanguage();
-  const scale = useSharedValue(0);
-  const wobble = useSharedValue(0);
+  // Pops in once and then stays perfectly still.
+  const scale = useSharedValue(0.85);
   useEffect(() => {
-    scale.value = withSpring(1, { damping: 8 });
-    wobble.value = withRepeat(
-      withSequence(withTiming(-4, { duration: 250 }), withTiming(4, { duration: 250 })),
-      -1,
-      true
-    );
-  }, [scale, wobble]);
-  const cardStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }, { rotate: `${wobble.value}deg` }],
-  }));
+    scale.value = withSpring(1, { damping: 16, stiffness: 180 });
+  }, [scale]);
+  const cardStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
   return (
     <Modal transparent animationType="fade" visible onRequestClose={onClose}>
