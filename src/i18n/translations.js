@@ -5,6 +5,7 @@ export const translations = {
   tr: {
     appTitle: '🎡 Spinly',
     appSubtitle: 'Karar veremiyor musun? Çark senin yerine seçsin.',
+    privacyPolicy: 'Gizlilik Politikası',
     back: '‹ Geri',
     close: 'Kapat',
 
@@ -66,6 +67,7 @@ export const translations = {
   en: {
     appTitle: '🎡 Spinly',
     appSubtitle: "Can't decide? Let the wheel choose for you.",
+    privacyPolicy: 'Privacy Policy',
     back: '‹ Back',
     close: 'Close',
 

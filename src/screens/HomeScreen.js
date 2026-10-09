@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   KeyboardAvoidingView,
+  Linking,
   Platform,
   Pressable,
   ScrollView,
@@ -19,6 +20,7 @@ import Icon from '../components/Icons';
 import { FREE_WHEEL_LIMIT, usePro } from '../premium/ProContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { MONETIZATION_ENABLED } from '../config/features';
+import { PRIVACY_POLICY_URL } from '../config/links';
 
 const SAVED_GRADIENTS = [
   ['#F2709C', '#FF9472'],
@@ -46,6 +48,10 @@ export default function HomeScreen({
     if (!v) return;
     setCustom((c) => [...c, v]);
     setInput('');
+  };
+
+  const openPrivacyPolicy = () => {
+    Linking.openURL(PRIVACY_POLICY_URL).catch(() => {});
   };
 
   const ready = custom.length >= 2;
@@ -318,6 +324,15 @@ export default function HomeScreen({
             />
           </View>
         )}
+
+        <Pressable
+          onPress={openPrivacyPolicy}
+          hitSlop={10}
+          style={styles.privacyLink}
+          accessibilityRole="link"
+        >
+          <Text style={[styles.privacyText, { color: theme.muted }]}>{t('privacyPolicy')}</Text>
+        </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -477,6 +492,10 @@ const styles = StyleSheet.create({
   paletteLabel: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   paletteName: { fontWeight: '700', fontSize: 15 },
   lockIcon: { position: 'absolute', right: 10, top: 8, fontSize: 14 },
+
+  // Footer
+  privacyLink: { alignSelf: 'center', marginTop: 32, paddingVertical: 6 },
+  privacyText: { fontSize: 13, fontWeight: '600', textDecorationLine: 'underline' },
 
   // Pro switch
   proCard: {
