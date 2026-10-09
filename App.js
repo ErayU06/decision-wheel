@@ -7,6 +7,7 @@ import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { ProProvider } from './src/premium/ProContext';
 import { LanguageProvider } from './src/i18n/LanguageContext';
 import UpgradeModal from './src/components/UpgradeModal';
+import { MONETIZATION_ENABLED } from './src/config/features';
 import {
   loadHistory,
   loadSavedWheels,
@@ -95,7 +96,7 @@ function Root() {
           onDeleteWheel={deleteWheel}
         />
       )}
-      <UpgradeModal />
+      {MONETIZATION_ENABLED && <UpgradeModal />}
     </>
   );
 }

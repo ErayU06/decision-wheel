@@ -4,11 +4,13 @@ import Icon from './Icons';
 import { useTheme } from '../theme/ThemeContext';
 import { usePro, PRO_HISTORY_LIMIT } from '../premium/ProContext';
 import { useLanguage } from '../i18n/LanguageContext';
+import { MONETIZATION_ENABLED } from '../config/features';
 
 export default function UpgradeModal() {
   const { theme } = useTheme();
   const { t } = useLanguage();
   const { upgrade, hideUpgrade, setPro } = usePro();
+  if (!MONETIZATION_ENABLED) return null;
 
   const perks = [
     {

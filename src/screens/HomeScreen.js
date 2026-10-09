@@ -18,6 +18,7 @@ import ProBadge from '../components/ProBadge';
 import Icon from '../components/Icons';
 import { FREE_WHEEL_LIMIT, usePro } from '../premium/ProContext';
 import { useLanguage } from '../i18n/LanguageContext';
+import { MONETIZATION_ENABLED } from '../config/features';
 
 const SAVED_GRADIENTS = [
   ['#F2709C', '#FF9472'],
@@ -297,24 +298,26 @@ export default function HomeScreen({
           })}
         </View>
 
-        {/* Pro test switch (mock until IAP is wired up) */}
-        <View style={[styles.proCard, { backgroundColor: theme.surface }, isPro && styles.proCardOn]}>
-          <View style={styles.flex}>
-            <View style={styles.proTitleRow}>
-              <Text style={[styles.proTitle, { color: theme.text }]}>
-                {isPro ? t('proActive') : t('freePlan')}
-              </Text>
-              <ProBadge />
+        {/* Pro test switch (mock until IAP is wired up) — hidden when monetization is off */}
+        {MONETIZATION_ENABLED && (
+          <View style={[styles.proCard, { backgroundColor: theme.surface }, isPro && styles.proCardOn]}>
+            <View style={styles.flex}>
+              <View style={styles.proTitleRow}>
+                <Text style={[styles.proTitle, { color: theme.text }]}>
+                  {isPro ? t('proActive') : t('freePlan')}
+                </Text>
+                <ProBadge />
+              </View>
+              <Text style={[styles.proSub, { color: theme.muted }]}>{t('simulatePro')}</Text>
             </View>
-            <Text style={[styles.proSub, { color: theme.muted }]}>{t('simulatePro')}</Text>
+            <Switch
+              value={isPro}
+              onValueChange={setPro}
+              trackColor={{ true: '#F5A623' }}
+              accessibilityLabel={t('a11ySimulatePro')}
+            />
           </View>
-          <Switch
-            value={isPro}
-            onValueChange={setPro}
-            trackColor={{ true: '#F5A623' }}
-            accessibilityLabel={t('a11ySimulatePro')}
-          />
-        </View>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "decision-wheel",
+    "name": "Spinly",
     "slug": "decision-wheel",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,7 +8,7 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.decision-wheel"
+      "bundleIdentifier": "com.erayulusoy.spinly"
     },
     "android": {
       "adaptiveIcon": {
@@ -16,7 +16,13 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+      },
+      "package": "com.erayulusoy.spinly",
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

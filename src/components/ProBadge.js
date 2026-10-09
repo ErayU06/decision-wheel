@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { MONETIZATION_ENABLED } from '../config/features';
 
 export default function ProBadge({ style }) {
+  if (!MONETIZATION_ENABLED) return null;
   return (
     <View style={[styles.badge, style]}>
       <Text style={styles.text}>PRO</Text>

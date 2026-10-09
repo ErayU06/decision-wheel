@@ -3,7 +3,7 @@ export const DEFAULT_LANGUAGE = 'en';
 
 export const translations = {
   tr: {
-    appTitle: '🎡 Karar Çarkı',
+    appTitle: '🎡 Spinly',
     appSubtitle: 'Karar veremiyor musun? Çark senin yerine seçsin.',
     back: '‹ Geri',
     close: 'Kapat',
@@ -64,7 +64,7 @@ export const translations = {
     limitPalette: 'Özel renk paletleri Pro kullanıcılara özel.',
   },
   en: {
-    appTitle: '🎡 Decision Wheel',
+    appTitle: '🎡 Spinly',
     appSubtitle: "Can't decide? Let the wheel choose for you.",
     back: '‹ Back',
     close: 'Close',
