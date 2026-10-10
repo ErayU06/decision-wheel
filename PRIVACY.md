@@ -27,4 +27,4 @@ If this policy changes, the updated version will be published in this repository
 
 ## Contact
 
-Questions about this policy: open an issue at <https://github.com/ErayU06/decision-wheel/issues>.
+Questions about this policy: open an issue at <https://github.com/ErayU06/spinly-privacy/issues>.
