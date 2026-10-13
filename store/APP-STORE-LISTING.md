@@ -121,6 +121,8 @@ First release of Spinly! Spin the wheel to decide what to eat, watch, play or do
 ```
 
 ## 5. Screenshots
+App Store Connect may offer only the **"iPhone with Dynamic Island (medium display)"** slot, which accepts 1179×2556 or **1206×2622**. Use the files in `store/app-store-screenshots/1206x2622/` for that slot (JPEG, no alpha). The 1320×2868 originals are for a 6.9" slot.
+
 iPhone **6.9"** (1320 × 2868) — files in `store/app-store-screenshots/` (JPEG, no alpha channel). The app is iPhone-only (`supportsTablet: false`), so iPad screenshots are not required.
 
 ## 6. App Privacy
