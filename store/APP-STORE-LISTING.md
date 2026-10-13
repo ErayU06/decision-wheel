@@ -121,7 +121,7 @@ First release of Spinly! Spin the wheel to decide what to eat, watch, play or do
 ```
 
 ## 5. Screenshots
-iPhone **6.9"** (1320 × 2868) — files in `store/app-store-screenshots/`. The app is iPhone-only (`supportsTablet: false`), so iPad screenshots are not required.
+iPhone **6.9"** (1320 × 2868) — files in `store/app-store-screenshots/` (JPEG, no alpha channel). The app is iPhone-only (`supportsTablet: false`), so iPad screenshots are not required.
 
 ## 6. App Privacy
 - **Data collection:** *Data Not Collected*
