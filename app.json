@@ -12,7 +12,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#3B1F8F",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -22,7 +22,11 @@
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "permissions": [
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "allowBackup": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,7 +41,21 @@
         }
       ],
       "expo-asset",
-      "expo-localization"
-    ]
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#3B1F8F",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7ea4e5db-53f9-465e-b25f-0dbcdff685f9"
+      }
+    },
+    "owner": "erayu"
   }
 }
